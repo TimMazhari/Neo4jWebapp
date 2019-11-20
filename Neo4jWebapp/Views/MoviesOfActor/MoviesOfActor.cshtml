@@ -1,0 +1,23 @@
+﻿@model Neo4jWebapp.ViewModels.ActorMoviesViewModel
+@{
+    ViewData["Title"] = "DataTest";
+}
+
+<form action="getMovies" method="POST">
+    <input type="text" name="actorName" />
+    <input type="submit" value="View Report" />
+</form>
+
+<ul>
+
+@if (Model != null)
+{
+    foreach (var movie in Model.movies)
+    {
+    <li>
+        @movie.title
+    </li>
+    }
+}
+
+</ul>
