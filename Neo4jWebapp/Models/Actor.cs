@@ -52,17 +52,36 @@ namespace Neo4jWebapp.Models
             IStatementResult result = session.Run(statement);
 
             INode node = null;
-            string movieTitle;
-            string movieTagline;
-            int movieReleased;
+            string movieTitle = null;
+            string movieTagline = null;
+            int movieReleased = 0;
 
             foreach (var record in result)
             {
                 node = record["m"].As<INode>();
-                movieTitle = node["title"].As<string>();
-                movieTagline = node["tagline"].As<string>();
-                movieReleased = node["released"].As<int>();
-
+                try
+                {
+                    movieTitle = node["title"].As<string>();
+                }catch(System.Collections.Generic.KeyNotFoundException e)
+                {
+                    Console.WriteLine("No Title found");
+                }
+                try
+                {
+                    movieTagline = node["tagline"].As<string>();
+                }
+                catch (System.Collections.Generic.KeyNotFoundException e)
+                {
+                    Console.WriteLine("No Tagline found");
+                }
+                try
+                {
+                    movieReleased = node["released"].As<int>();
+                }
+                catch (System.Collections.Generic.KeyNotFoundException e)
+                {
+                    Console.WriteLine("No releasedate found");
+                }
                 Movie movie = new Movie();
                 movie.title = movieTitle;
                 movie.tagline = movieTagline;

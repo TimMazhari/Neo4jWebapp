@@ -2,15 +2,24 @@
 using Neo4jWebapp.Models;
 using Neo4jWebapp.ViewModels;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Neo4jWebapp.Controllers
 {
     public class MoviesOfActorController : Controller
     {
-        public IActionResult MoviesOfActor()
+        private static ActorMoviesViewModel actorMoviesViewModel = null;
+
+        public IActionResult MoviesOfActor(bool initial)
         {
-            
-            return View();
+            if (initial)
+            {
+                return View();
+            }
+            else
+            {
+                return View(actorMoviesViewModel);
+            }
         }
 
         [HttpPost]
@@ -20,13 +29,11 @@ namespace Neo4jWebapp.Controllers
 
             List<Movie> movies = new List<Movie>();
             movies = actor.getMovies();
-
-            ActorMoviesViewModel actorMoviesViewModel = new ActorMoviesViewModel();
+            actorMoviesViewModel = new ActorMoviesViewModel();
             actorMoviesViewModel.actor = actor;
             actorMoviesViewModel.movies = movies;
 
-
-            return View(actorMoviesViewModel);
+            return RedirectToAction("MoviesOfActor", "MoviesOfActor", false);
         }
     }
 }
